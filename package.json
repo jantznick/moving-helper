@@ -1,0 +1,21 @@
+{
+  "name": "moving-helper",
+  "version": "1.0.0",
+  "description": "A webapp to help people decide where things will go when moving",
+  "main": "post.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jantznick/moving-helper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jantznick/moving-helper/issues"
+  },
+  "homepage": "https://github.com/jantznick/moving-helper#readme"
+}

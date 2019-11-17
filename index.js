@@ -1,3 +1,4 @@
+module.exports = `
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -34,7 +35,7 @@
                 <button id="addItem">ADD ITEM</button>
             </form>
 
-            <form action="/" id="newRoomForm">
+            <form id="newRoomForm">
                 <label>Add Room:</label>
                 <input id="roomName" type="text"></input>
                 <button id="addRoom">ADD ROOM</button>
@@ -91,3 +92,4 @@
 
 </body>
 </html>
+`;

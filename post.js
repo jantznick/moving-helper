@@ -4,6 +4,9 @@ const categories = [{
 }, {
     value: "need",
     title: "Things We Need"
+}, {
+    value: "rid",
+    title: "Things We're Getting Rid Of"
 }];
 
 const selectOptions = document.getElementById("selectOptions");
@@ -33,6 +36,7 @@ var createRoom = (event) => {
 }
 
 document.getElementById("addItem").addEventListener("click", event => {
+    event.preventDefault();
     var val = document.getElementById("selectOptions").value;
     var text = document.getElementById("itemName").value;
 
@@ -58,6 +62,7 @@ document.getElementById("addItem").addEventListener("click", event => {
 });
 
 document.getElementById("addRoom").addEventListener("click", event => {
+    event.preventDefault();
     var val = document.getElementById("roomName").value;
 
     createRoom({
@@ -84,6 +89,7 @@ var createItem = (event) => {
 }
 
 document.getElementById("editItem").addEventListener("click", event => {
+    event.preventDefault();
     editItem({
         newValue: document.getElementById("editItemName").value,
         originalValue: document.getElementById("originalItemName").value

@@ -1,3 +1,4 @@
+module.exports = `
 @import url(https://fonts.googleapis.com/css?family=Lato);
 body {
   background-color: #eaeaea;
@@ -199,3 +200,4 @@ button:hover {
 #saveList:hover {
 
 }
+`
