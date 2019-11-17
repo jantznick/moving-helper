@@ -1,0 +1,85 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="style.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="script.js"></script>
+
+</head>
+<body>
+    <div id="page">
+        <div id="workarea">
+            <h1>Moving Things Helper</h1>
+
+            <!-- <div id="completed-tasks">
+                <h3>
+                    <em class="icon-ok icon-large"></em> 
+                </h3>	
+            </div>#completed-tasks -->
+
+            <form>
+                <label>Add Item:</label>
+                <input id="itemName" type="text"></input>
+                <label>Select Location:</label>
+                <select id="selectOptions">
+                </select>
+                <button id="addItem">ADD</button>
+            </form>
+
+            <hr class="pageSplitter">
+
+            <div id="users" class="user-panels">
+                <div id="categories">
+                    <div id="user-2" class="user-panel">
+                        <h4 class="user-name">Things We Have</h4>
+
+                        <div id="haveList" class="task-list" ondrop="drop(event,this)" ondragover="allowDrop(event)">
+                            <div id="task-5" class="task">
+                                <p>task 5</p>
+                            </div>
+                            <div id="task-6" class="task">
+                                <p>task 6</p>
+                            </div>
+                            <div id="task-7" class="task">
+                                <p>task 7</p>
+                            </div>
+                            <div id="task-8" class="task">
+                                <p>task 8</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="user-3" class="user-panel">
+                        <h4 class="user-name">Things We Need</h4>
+
+                        <div id="needList" class="task-list" ondrop="drop(event,this)" ondragover="allowDrop(event)">
+                            <div id="task-9" class="task" draggable="true" ondragstart="drag(event)">
+                                <p>question</p>
+                            </div>
+                            <div id="task-10" class="task" draggable="true" ondragstart="drag(event)">
+                                <p>note</p>
+                            </div>
+                            <div id="task-11" class="task" draggable="true" ondragstart="drag(event)">
+                                <p>video</p>
+                            </div>
+                            <div id="task-12" class="task" draggable="true" ondragstart="drag(event)">
+                                <p>image</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr class="pageSplitter">
+
+                <div id="rooms">
+                </div>
+
+            </div><!-- #users -->
+        </div><!-- #workarea -->
+    </div><!-- #page -->
+    <script src="nick.js"></script>
+
+</body>
+</html>
