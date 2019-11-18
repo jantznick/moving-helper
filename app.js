@@ -10,6 +10,7 @@ var index = require('./index');
 var style = require('./style');
 var pre = '';
 var post = '';
+var dragPolyfill = '';
 
 var selfReadFile = (fileName, string) => {
 	fs.readFile(fileName, 'utf8', (err, data) => {
@@ -32,6 +33,13 @@ fs.readFile('./post.js', 'utf8', (err, data) => {
 		console.log(err);
 	};
 	post += data;
+});
+
+fs.readFile('./DragDropTouch.js', 'utf8', (err, data) => {
+	if (err) {
+		console.log(err);
+	};
+	dragPolyfill += data;
 });
 
 http.createServer(function (req, res) {
@@ -82,6 +90,10 @@ http.createServer(function (req, res) {
 			break;
 		case '/post.js':
 			res.write(post);
+			res.end();
+			break;
+		case '/DragDropTouch.js':
+			res.write(dragPolyfill);
 			res.end();
 			break;
 		case '/contact':
