@@ -96,6 +96,11 @@ document.getElementById("editItem").addEventListener("click", event => {
     });
 });
 
+document.getElementById("saveList").addEventListener("click", event => {
+    event.preventDefault();
+    console.log("list being saved");
+});
+
 var editItem = ({newValue, originalValue}) => {
     var icon = document.createElement("i");
     icon.className = "fa fa-edit";
@@ -110,3 +115,12 @@ var editItem = ({newValue, originalValue}) => {
 document.getElementById("closeModal").addEventListener("click", event => {
     document.getElementById("modal").classList.add("hideModal")
 })
+
+if (!!window.location.search) {
+    var listId = window.location.search;
+    var newP = document.createElement("p");
+    newP.id = "listShareUrl";
+    newP.innerText = `List Share URL: http://blah.com/list${listId}`;
+    var before = document.getElementById("newItemForm");
+    before.parentElement.insertBefore(newP, before)
+}

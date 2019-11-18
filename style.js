@@ -8,12 +8,15 @@ body {
 }
 #header {
   display:flex;
-  align-items:center;
+  align-items:flex-end;
 }
 h1 {
   margin: 20px 0;
   text-align: left;
   color: #da4453;
+}
+#header h1 {
+  margin-bottom:0;
 }
 h2 {
   text-align: right;
@@ -199,5 +202,11 @@ button:hover {
 }
 #saveList:hover {
 
+}
+#listShareUrl {
+  margin-top: 0;
+}
+#newItemForm {
+  margin-top: 25px;
 }
 `

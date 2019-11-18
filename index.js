@@ -19,7 +19,6 @@ module.exports = `
                     <button id="saveList">SAVE LIST</button>
                 </form>
             </div>
-
             <!-- <div id="completed-tasks">
                 <h3>
                     <em class="icon-ok icon-large"></em> 

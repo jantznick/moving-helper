@@ -1,10 +1,10 @@
 var http = require('http');
 var fs = require('fs');
 
+// SHOULD ALL BE A GENERIC JS FILE EXPORTING A SINGLE STRING
 // COPY FOLLOWING FILES BEFORE LOADING:
 // style.css > style.js
 // index.html > index.js
-// SHOULD ALL BE A GENERIC JS FILE EXPORTING A SINGLE STRING
 
 var index = require('./index');
 var style = require('./style');
@@ -20,18 +20,18 @@ var selfReadFile = (fileName, string) => {
 	});
 }
 
-fs.readFile('./post.js', 'utf8', (err, data) => {
-	if (err) {
-		console.log(err);
-	};
-	post += data;
-});
-
 fs.readFile('./pre.js', 'utf8', (err, data) => {
 	if (err) {
 		console.log(err);
 	};
 	pre += data;
+});
+
+fs.readFile('./post.js', 'utf8', (err, data) => {
+	if (err) {
+		console.log(err);
+	};
+	post += data;
 });
 
 http.createServer(function (req, res) {
@@ -60,8 +60,15 @@ http.createServer(function (req, res) {
 		});
 	}
 	
+	var re = /\?[^&?]*?=[^&?]*/;
+	var url = url.replace(re, '');
+
 	switch(url) {
 		case '/':
+			res.write("homepage");
+			res.end();
+			break;
+		case '/list':
 			res.write(index);
 			res.end();
 			break;
