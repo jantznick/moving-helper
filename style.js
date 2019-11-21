@@ -116,7 +116,10 @@ a:hover {
 	background-color: #005c0c;
 }
 .task.need {
-	background-color: #b3000f
+	background-color: #b3000f;
+}
+.task.rid {
+  background-color: #727573;
 }
 .task:last-child {
   border-width: 1px;
@@ -167,10 +170,10 @@ a:hover {
 
 #modalWindow {
 	width: 50vw;
-    height: 50vh;
-    background: white;
-    position: relative;
-    margin: 25vh 25vw;
+  height: 50vh;
+  background: white;
+  position: relative;
+  margin: 25vh 25vw;
 }
 
 #modalForm {

@@ -76,7 +76,7 @@ document.getElementById("addRoom").addEventListener("click", event => {
 var createItem = (event) => {
     var newE = document.createElement("div");
     newE.classList.add("task");
-    newE.classList.add(event.val === "have" ? "have" : "need")
+    newE.classList.add(event.val)
     newE.draggable = "true";
     newE.id = event.text.replace(" ", "");
     newE.innerText = event.text;
@@ -123,4 +123,63 @@ if (!!window.location.search) {
     newP.innerText = `List Share URL: http://blah.com/list${listId}`;
     var before = document.getElementById("newItemForm");
     before.parentElement.insertBefore(newP, before)
+
+    fetch(`http://localhost:3000/get-data${listId}`)
+    .then(response => response.json())
+    .then(json => {
+        json.rooms.map(room => {
+            createRoom({
+                name: room,
+                value: room.replace(" ", "")
+            })
+        })
+        json.items.map(item => {
+            createItem({
+                val: item.category,
+                text: item.title
+            })
+        })
+    });
+}
+
+document.getElementById("saveList").addEventListener("click", () => {
+    var data = {
+        rooms: [],
+        items: []
+    };
+
+    if (document.getElementById("rooms").children.length > 0) {
+        Array.from(document.getElementById("rooms").children).map(room => {
+            data.rooms.push(room.innerText)
+        })
+    }
+
+    if (document.getElementsByClassName("task").length > 0) {
+        Array.from(document.getElementsByClassName("task")).map(task => {
+            data.items.push({
+                title: task.innerText,
+                category: task.classList.value.replace("task ","")
+            })
+        })
+    }
+
+    console.log(data);
+    try {
+        const posted = postData(data);
+        console.log(posted);
+    } catch (error) {
+        console.error(error);
+    }
+})
+
+async function postData(data = {}) {
+    const response = fetch("http://localhost:3000/saveData", {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: JSON.stringify(data) 
+    });
+    console.log(response);
+    return await response.json();
 }

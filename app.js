@@ -47,29 +47,31 @@ http.createServer(function (req, res) {
 
 	if (req.method === 'POST' && req.url === '/saveData') {
 		console.log('POST');
+		var random =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+		console.log(random);
 		let body = '';
 		req.on('data', chunk => {
 			body += chunk.toString();
+			console.log(body);
 		});
 		req.on('end', () => {
-			fs.stat('./saved-configs/test.json', function(err, stats) {
-				if (!stats) {
-					fs.writeFile('./saved-configs/test.json', body, function(err) {
-		
-						if(err) {
-							return console.log(err);
-						}
-					
-						res.write('<h1>api call worked</h1>')
-						res.end();
-					}); 
-				}
-			});
+			if (!fs.existsSync(`./saved-configs/${random}.json`)) {
+				fs.writeFile(`./saved-configs/${random}.json`, body, function(err) {
+					console.log(body);
+					if(err) {
+						return console.log(err);
+					}
+				
+					res.write({code: random})
+					res.end();
+				});
+			}
 		});
 	}
 	
 	var re = /\?[^&?]*?=[^&?]*/;
 	var url = url.replace(re, '');
+	var id = req.url.match(re);
 
 	switch(url) {
 		case '/':
@@ -102,12 +104,12 @@ http.createServer(function (req, res) {
 			res.end();
 			break;
 		case '/get-data':
-			fs.readFile('./saved-configs/test.json', 'utf8', (err, data) => {
+			var file = id[0].replace("?listId=","");
+			fs.readFile(`./saved-configs/${file}.json`, 'utf8', (err, data) => {
 				if (err) {
 					console.log(err);
 				};
-				var json = JSON.parse(data);
-				res.write(`<h1>Printed important data<h1>${json.name}`);
+				res.write(data);
 				res.end();
 			});
 			break;
