@@ -96,11 +96,6 @@ document.getElementById("editItem").addEventListener("click", event => {
     });
 });
 
-document.getElementById("saveList").addEventListener("click", event => {
-    event.preventDefault();
-    console.log("list being saved");
-});
-
 var editItem = ({newValue, originalValue}) => {
     var icon = document.createElement("i");
     icon.className = "fa fa-edit";
@@ -143,14 +138,17 @@ if (!!window.location.search) {
 }
 
 document.getElementById("saveList").addEventListener("click", () => {
+    event.preventDefault();
+    console.log(window.location.search || window.listId);
     var data = {
         rooms: [],
-        items: []
+        items: [],
+        listId: window.location.search || window.listId
     };
 
     if (document.getElementById("rooms").children.length > 0) {
         Array.from(document.getElementById("rooms").children).map(room => {
-            data.rooms.push(room.innerText)
+            data.rooms.push(room.firstElementChild.innerText)
         })
     }
 
@@ -158,28 +156,25 @@ document.getElementById("saveList").addEventListener("click", () => {
         Array.from(document.getElementsByClassName("task")).map(task => {
             data.items.push({
                 title: task.innerText,
-                category: task.classList.value.replace("task ","")
+                category: task.classList.value.replace("task ",""),
+                room: task.parentElement.parentElement.id
             })
         })
     }
 
-    console.log(data);
-    try {
-        const posted = postData(data);
-        console.log(posted);
-    } catch (error) {
-        console.error(error);
-    }
-})
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:3000/saveData', false);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+    xhr.send(JSON.stringify(data));
 
-async function postData(data = {}) {
-    const response = fetch("http://localhost:3000/saveData", {
-        method: 'POST', 
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: JSON.stringify(data) 
-    });
-    console.log(response);
-    return await response.json();
-}
+    if (xhr.status === 200) {
+        var listId = JSON.parse(xhr.responseText).code;
+        window.listId = listId;
+        var newP = document.createElement("p");
+        newP.id = "listShareUrl";
+        newP.innerText = `List Share URL: http://blah.com/list?listId=${listId}`;
+        var before = document.getElementById("newItemForm");
+        before.parentElement.insertBefore(newP, before)
+    }
+
+})
