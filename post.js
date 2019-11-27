@@ -28,6 +28,7 @@ var createRoom = (event) => {
     title.classList.add("user-name");
     title.innerText = event.name;
     list.classList.add("task-list");
+    list.id = `${event.value}-list`.replace(" ","").toLowerCase();
     list.setAttribute("ondrop", "drop(event,this)");
     list.setAttribute("ondragover", "allowDrop(event)");
     container.appendChild(title);
@@ -55,7 +56,8 @@ document.getElementById("addItem").addEventListener("click", event => {
 
     createItem({
         val,
-        text
+        text,
+        room: null
     })
 
     document.getElementById("itemName").value = "";
@@ -85,7 +87,11 @@ var createItem = (event) => {
     icon.className = "fa fa-edit";
     newE.appendChild(icon);
 
-    document.getElementById(`${event.val}List`).appendChild(newE);
+    if (event.room) {
+        document.getElementById(`${event.room}-list`).appendChild(newE);
+    } else {
+        document.getElementById(`${event.val}List`).appendChild(newE);
+    }
 }
 
 document.getElementById("editItem").addEventListener("click", event => {
@@ -122,6 +128,8 @@ if (!!window.location.search) {
     fetch(`http://localhost:3000/get-data${listId}`)
     .then(response => response.json())
     .then(json => {
+        var nospace = [];
+        json.rooms.forEach(x => nospace.push(x.replace(" ","")))
         json.rooms.map(room => {
             createRoom({
                 name: room,
@@ -129,9 +137,15 @@ if (!!window.location.search) {
             })
         })
         json.items.map(item => {
+            var room = null;
+            if (nospace.indexOf(item.room) > -1) {
+                console.log(document.getElementById(`${item.room}-list`));
+                room = item.room;
+            }
             createItem({
                 val: item.category,
-                text: item.title
+                text: item.title,
+                room
             })
         })
     });
@@ -139,7 +153,6 @@ if (!!window.location.search) {
 
 document.getElementById("saveList").addEventListener("click", () => {
     event.preventDefault();
-    console.log(window.location.search || window.listId);
     var data = {
         rooms: [],
         items: [],
@@ -170,11 +183,30 @@ document.getElementById("saveList").addEventListener("click", () => {
     if (xhr.status === 200) {
         var listId = JSON.parse(xhr.responseText).code;
         window.listId = listId;
-        var newP = document.createElement("p");
-        newP.id = "listShareUrl";
-        newP.innerText = `List Share URL: http://blah.com/list?listId=${listId}`;
-        var before = document.getElementById("newItemForm");
-        before.parentElement.insertBefore(newP, before)
+        if (!(window.location.search.replace("?listId=","") === listId)) {
+            var newP = document.createElement("p");
+            newP.id = "listShareUrl";
+            newP.innerText = `List Share URL: http://blah.com/list?listId=${listId}`;
+            var before = document.getElementById("newItemForm");
+            before.parentElement.insertBefore(newP, before)
+            window.location.search = `?listId=${listId}`
+        } else {
+            document.getElementById("saveList").innerText = "SAVED"
+            document.getElementById("saveList").style.background = "#005c0c"
+            document.getElementById("saveList").style.borderColor = "#005c0c"
+            document.getElementById("saveList").style.color = "white"
+            document.getElementById("saveList").style.boxShadow = "0px 0px 50px 10px rgba(0,0,0,0.75)"
+            setTimeout(() => {
+                document.getElementById("saveList").innerText = "SAVE LIST"
+                document.getElementById("saveList").style.background = ""
+                document.getElementById("saveList").style.borderColor = ""
+                document.getElementById("saveList").style.color = ""
+                document.getElementById("saveList").style.boxShadow = ""
+            }, 750);
+            setTimeout(() => {
+                document.getElementById("saveList").style.boxShadow = ""
+            }, 100);
+        }
     }
 
 })
