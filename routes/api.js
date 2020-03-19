@@ -1,6 +1,19 @@
 var fs = require('fs');
 
+var mongoose = require('mongoose');
+
+var mongooseURL = process.env.MONGODB_URI;
+
+mongoose.connect(mongooseURL, {useNewUrlParser: true, useUnifiedTopology: true});
+
 module.exports = function(app) {
+
+    var saveSchema = new mongoose.Schema({
+        id : String,
+        data : Object
+    });
+
+    var save = mongoose.model('save', saveSchema);
 
     app.post("/save", (req,res) => {
         var random =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -9,42 +22,51 @@ module.exports = function(app) {
 			body += chunk.toString();
 		});
 		req.on('end', () => {
-			console.log(body);
-			var re = /\?[^&?]*?=[^&?]*/;
-			if (JSON.parse(body).listId) {
-				console.log('has listid');
-				console.log(JSON.parse(body).listId);
-				var listId = JSON.parse(body).listId.match(re) || JSON.parse(body).listId;
-			}
-			if (listId) {
-				console.log('has id');
-				console.log(listId);
-				var listId = listId[0].replace("?listId=","");
-			}
-			if (listId) {
-				console.log(listId);
-				random = listId;
-			}
-			fs.writeFile(`./saved-configs/${random}.json`, body, function(err) {
-				if(err) {
-					return console.log(err);
-				}
-			
-				res.setHeader('Content-Type', 'application/json');
-				res.end(JSON.stringify({code: random}));
-			});
+            var data = JSON.parse(body);
+
+            if(data.listId) {
+                var list = data.listId.replace("?listId=","");
+                var query = {
+                    id: list
+                };
+                save.findOneAndUpdate(query, { $set: {
+                    data: data
+                }}, {useFindAndModify: false}, () => {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify({code: list}));
+                })
+            } else {
+                var newSave = new save({
+                    id: random,
+                    data: body
+                });
+                newSave.save(function (err, newSave) {
+                    if (err) {
+                        return console.log(err);
+                    }
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify({code: random}));
+                });
+            }
 		});
     });
 
     app.get("/get-data", (req,res) => {
-        console.log(req.query.listId);
         var file = req.query.listId;
-        fs.readFile(`./saved-configs/${file}.json`, 'utf8', (err, data) => {
+        save.find({
+            id: file
+        }, (err, data) => {
             if (err) {
-                console.log(err);
-            };
-            res.write(data);
-            res.end();
+                    console.log(err);
+            }
+            if (data.length < 1) {
+                res.setHeader('Content-Type', 'application/json');
+                res.send({});
+            }
+            if (data.length > 0) {
+                res.setHeader('Content-Type', 'application/json');
+                res.send(data[0].data);
+            }
         });
     });
 

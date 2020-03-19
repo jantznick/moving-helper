@@ -124,28 +124,35 @@ if (!!window.location.search) {
     var before = document.getElementById("newItemForm");
     before.parentElement.insertBefore(newP, before)
 
-    fetch(`http://localhost:3000/get-data${listId}`)
+    fetch(`${window.location.origin}/get-data${listId}`)
     .then(response => response.json())
     .then(json => {
+        if (Object.keys(json).length < 1) {
+            window.location.search = '';
+        }
         var nospace = [];
-        json.rooms.forEach(x => nospace.push(x.replace(" ","")))
-        json.rooms.map(room => {
-            createRoom({
-                name: room,
-                value: room.replace(" ", "")
+        if (json.rooms) {
+            json.rooms.forEach(x => nospace.push(x.replace(" ","")))
+            json.rooms.map(room => {
+                createRoom({
+                    name: room,
+                    value: room.replace(" ", "")
+                })
             })
-        })
-        json.items.map(item => {
-            var room = null;
-            if (nospace.indexOf(item.room) > -1) {
-                room = item.room;
-            }
-            createItem({
-                val: item.category,
-                text: item.title,
-                room
+        }
+        if (json.items) {
+            json.items.map(item => {
+                var room = null;
+                if (nospace.indexOf(item.room) > -1) {
+                    room = item.room;
+                }
+                createItem({
+                    val: item.category,
+                    text: item.title,
+                    room
+                })
             })
-        })
+        }
     });
 }
 
@@ -174,7 +181,7 @@ document.getElementById("saveList").addEventListener("click", () => {
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:3000/save', false);
+    xhr.open('POST', `${window.location.origin}/save`, false);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
     xhr.send(JSON.stringify(data));
 
