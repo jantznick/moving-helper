@@ -47,7 +47,6 @@ document.getElementById("addItem").addEventListener("click", event => {
         error.id = "addItemError";
 
         document.getElementById("newItemForm").appendChild(error);
-        return console.log("bruh");
     }
 
     if (document.getElementById("addItemError")) {
@@ -121,7 +120,7 @@ if (!!window.location.search) {
     var listId = window.location.search;
     var newP = document.createElement("p");
     newP.id = "listShareUrl";
-    newP.innerText = `List Share URL: http://blah.com/list${listId}`;
+    newP.innerHTML = `List Share URL: <a href='${window.location.origin + listId}'>${window.location.origin + listId}</a>`;
     var before = document.getElementById("newItemForm");
     before.parentElement.insertBefore(newP, before)
 
@@ -139,7 +138,6 @@ if (!!window.location.search) {
         json.items.map(item => {
             var room = null;
             if (nospace.indexOf(item.room) > -1) {
-                console.log(document.getElementById(`${item.room}-list`));
                 room = item.room;
             }
             createItem({
@@ -176,7 +174,7 @@ document.getElementById("saveList").addEventListener("click", () => {
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:3000/saveData', false);
+    xhr.open('POST', 'http://localhost:3000/save', false);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
     xhr.send(JSON.stringify(data));
 
