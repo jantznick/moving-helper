@@ -2,10 +2,6 @@ var fs = require('fs');
 
 var mongoose = require('mongoose');
 
-var mongooseURL = process.env.MONGODB_URI;
-var username = process.env.USERNAME;
-var password = process.env.PASSWORD;
-
 mongoose.connect(`mongodb://database:27017`, {useNewUrlParser: true, useUnifiedTopology: true});
 
 module.exports = function(app) {
