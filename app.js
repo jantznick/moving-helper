@@ -11,7 +11,7 @@ app.use(express.static("public"));
 var api = require('./routes/api')(app);
 
 app.get("/", (req,res) => {
-    res.render('index');
+	res.render('index');
 });
 
 app.get("*", (req,res) => {
