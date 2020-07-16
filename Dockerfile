@@ -6,5 +6,5 @@ RUN npm install pm2 -g
 USER node
 RUN npm install
 COPY --chown=node:node . .
-EXPOSE 3000
+EXPOSE 3001
 CMD ["pm2-runtime", "app.js"]
