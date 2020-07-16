@@ -4,6 +4,8 @@ services:
         build: .
         ports:
             - "3000:3000"
+        environment:
+            - VIRTUAL_HOST=easymoveplanner.com
         links:
             - database
         depends_on:
@@ -13,3 +15,5 @@ services:
         ports:
             - 27017:27017
         restart: always
+        environment:
+            - VIRTUAL_HOST=easymoveplanner.com
