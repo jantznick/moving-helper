@@ -15,5 +15,3 @@ services:
         ports:
             - 27017:27017
         restart: always
-        environment:
-            - VIRTUAL_HOST=easymoveplanner.com
