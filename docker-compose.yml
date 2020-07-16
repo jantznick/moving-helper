@@ -1,11 +1,11 @@
 version: '2.0'
 services:
-    fc:
+    front-end:
         build: .
         ports:
-            - "3030:3030"
+            - "3001:3001"
         environment:
-            - VIRTUAL_HOST=findclancy.com
+            - VIRTUAL_HOST=easymoveplanner.com
         links:
             - database
         depends_on:
