@@ -8,7 +8,7 @@ const port = process.env.PORT || 3001;
 app.set("view engine","ejs");
 app.use(express.static("public"));
 
-var api = require('./routes/api')(app);
+// var api = require('./routes/api')(app);
 
 app.get("/", (req,res) => {
 	res.render('index');

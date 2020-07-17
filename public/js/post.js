@@ -36,6 +36,36 @@ var createRoom = (event) => {
 	roomSelector.appendChild(container);
 }
 
+var createItem = (event) => {
+	var newE = document.createElement("div");
+	newE.classList.add("task");
+	newE.classList.add(event.val)
+	newE.draggable = "true";
+	newE.id = event.text.replace(" ", "");
+	newE.innerText = event.text;
+	newE.setAttribute("onClick","activateEditModal(this)")
+	var icon = document.createElement("i");
+	icon.className = "fa fa-edit";
+	newE.appendChild(icon);
+
+	if (event.room) {
+		document.getElementById(`${event.room}-list`).appendChild(newE);
+	} else {
+		document.getElementById(`${event.val}List`).appendChild(newE);
+	}
+}
+
+var editItem = ({newValue, originalValue}) => {
+	var icon = document.createElement("i");
+	icon.className = "fa fa-edit";
+
+	document.getElementById(originalValue).innerText = newValue;
+	document.getElementById(originalValue).appendChild(icon);
+	document.getElementById(originalValue).id = newValue.replace(" ","");
+
+	document.getElementById("modal").classList.add("hideModal")
+}
+
 document.getElementById("addItem").addEventListener("click", event => {
 	event.preventDefault();
 	var val = document.getElementById("selectOptions").value;
@@ -74,25 +104,6 @@ document.getElementById("addRoom").addEventListener("click", event => {
 	document.getElementById("roomName").value = "";
 })
 
-var createItem = (event) => {
-	var newE = document.createElement("div");
-	newE.classList.add("task");
-	newE.classList.add(event.val)
-	newE.draggable = "true";
-	newE.id = event.text.replace(" ", "");
-	newE.innerText = event.text;
-	newE.setAttribute("onClick","activateEditModal(this)")
-	var icon = document.createElement("i");
-	icon.className = "fa fa-edit";
-	newE.appendChild(icon);
-
-	if (event.room) {
-		document.getElementById(`${event.room}-list`).appendChild(newE);
-	} else {
-		document.getElementById(`${event.val}List`).appendChild(newE);
-	}
-}
-
 document.getElementById("editItem").addEventListener("click", event => {
 	event.preventDefault();
 	editItem({
@@ -100,17 +111,6 @@ document.getElementById("editItem").addEventListener("click", event => {
 		originalValue: document.getElementById("originalItemName").value
 	});
 });
-
-var editItem = ({newValue, originalValue}) => {
-	var icon = document.createElement("i");
-	icon.className = "fa fa-edit";
-
-	document.getElementById(originalValue).innerText = newValue;
-	document.getElementById(originalValue).appendChild(icon);
-	document.getElementById(originalValue).id = newValue.replace(" ","");
-
-	document.getElementById("modal").classList.add("hideModal")
-}
 
 document.getElementById("closeModal").addEventListener("click", event => {
 	document.getElementById("modal").classList.add("hideModal")
