@@ -66,31 +66,31 @@ var editItem = ({newValue, originalValue}) => {
 	document.getElementById("modal").classList.add("hideModal")
 }
 
-document.getElementById("addItem").addEventListener("click", event => {
-	event.preventDefault();
-	var val = document.getElementById("selectOptions").value;
-	var text = document.getElementById("itemName").value;
+// document.getElementById("addItem").addEventListener("click", event => {
+// 	event.preventDefault();
+	// var val = document.getElementById("selectOptions").value;
+	// var text = document.getElementById("itemName").value;
 
-	if (document.getElementById(text.replace(" ",""))) {
-		var error = document.createElement("p");
-		error.innerText = `Only 1 item name ${text} allowed`;
-		error.id = "addItemError";
+// 	if (document.getElementById(text.replace(" ",""))) {
+// 		var error = document.createElement("p");
+// 		error.innerText = `Only 1 item name ${text} allowed`;
+// 		error.id = "addItemError";
 
-		document.getElementById("newItemForm").appendChild(error);
-	}
+// 		document.getElementById("newItemForm").appendChild(error);
+// 	}
 
-	if (document.getElementById("addItemError")) {
-		document.getElementById("addItemError").remove();
-	}
+// 	if (document.getElementById("addItemError")) {
+// 		document.getElementById("addItemError").remove();
+// 	}
 
-	createItem({
-		val,
-		text,
-		room: null
-	})
+// 	createItem({
+// 		val,
+// 		text,
+// 		room: null
+// 	})
 
-	document.getElementById("itemName").value = "";
-});
+// 	document.getElementById("itemName").value = "";
+// });
 
 document.getElementById("addRoom").addEventListener("click", event => {
 	event.preventDefault();
